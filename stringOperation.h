@@ -11,6 +11,12 @@
 #include <string.h>
 #include "conio.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <conio.h>
+#include <windows.h>
 
 int compareString(char *a, char *b);
 void enterPassword(char *a);
+int whereX();
+int whereY();

@@ -5,7 +5,10 @@
 #include "stringOperation.h"
 #include <stdio.h>
 #include <string.h>
+#include <conio.h>
+#include <windows.h>
 
+const char BACKSPACE = 8;
 
 int compareString(char *a, char *b) //比较两个字符串是否相同
 {
@@ -26,19 +29,47 @@ int compareString(char *a, char *b) //比较两个字符串是否相同
     }
 }
 
+//获取光标的位置x
+int whereX()
+{
+    CONSOLE_SCREEN_BUFFER_INFO pBuffer;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &pBuffer);
+    return (pBuffer.dwCursorPosition.X+1);
+}
+
+//获取光标的位置y
+int whereY()
+{
+    CONSOLE_SCREEN_BUFFER_INFO pBuffer;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &pBuffer);
+    return (pBuffer.dwCursorPosition.Y+1);
+}
+
+
 void enterPassword(char *a) //用于隐藏输入的密码
 {
     for (int i = 0; i < 15; ++i)
     {
+        int startPosition = whereY();
         char inputValue = (char) getch();
         if (inputValue == '\r')
         {
             printf("\n\n");
             break;
         }
-        *(a + i) = inputValue;
-        printf("*");
+        else if (inputValue == BACKSPACE)
+        {
+            //if (whereY() > startPosition)
+            {
+                printf("\b ");
+                printf("\b");
+            }
+            i -= i;
+        }
+        else
+        {
+            *(a + i) = inputValue;
+            printf("*");
+        }
     }
-
-
 }
