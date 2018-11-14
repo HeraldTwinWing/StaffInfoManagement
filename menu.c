@@ -39,8 +39,8 @@ void selectOption()
 {
     int selected = 0;
     char password[15] = "admin";    //密码
-    char inputPassword[15] = "";
     scanf("%d", &selected);
+    system("cls");
     if (adminMode == 0)
     {
         switch (selected)
@@ -48,10 +48,12 @@ void selectOption()
             case 1:       //查询功能
                 break;
             case 2:       //管理员模式
-                enterAdminMode(password, inputPassword);
+                enterAdminMode(password);
                 break;
             case 3:       //退出系统
                 exitSystem = 0;
+                break;
+            default:
                 break;
         }
     }
@@ -61,8 +63,9 @@ void selectOption()
     }
 }
 
-void enterAdminMode(char *password,char *inputPassword) //清屏并显示进入管理员模式
+void enterAdminMode(char *password) //清屏并显示进入管理员模式
 {
+    char inputPassword[15] = "";
     printf("Please enter the password:");
     enterPassword(inputPassword);   //输入密码
     if (compareString(password, inputPassword))
@@ -72,6 +75,22 @@ void enterAdminMode(char *password,char *inputPassword) //清屏并显示进入�
     }
     else
     {
+        system("cls");
         printf("Password Error!\n");
+        printf("Press ESC to main menu,Press ENTER to retry.\n");
+        char pressKey = '0';
+        pressKey = (char) getch();
+        switch (pressKey)
+        {
+            case '\r':  //重新输入密码
+                system("cls");
+                enterAdminMode(password);
+                break;
+            case 27:    //返回主菜单
+                system("cls");
+                break;
+            default:
+                break;
+        }
     }
 }

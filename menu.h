@@ -12,4 +12,4 @@ int exitSystem;
 
 void showMenu();
 void selectOption();
-void enterAdminMode(char *password,char *inputPassword);
+void enterAdminMode(char *password);
