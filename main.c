@@ -1,7 +1,11 @@
 #include <stdio.h>
+#include "menu.h"
 
 int main()
 {
-    printf("÷–Œƒ≤‚ ‘\n");
-    return 0;
+    while (exitSystem)
+    {
+        showMenu();
+        selectOption();
+    }
 }

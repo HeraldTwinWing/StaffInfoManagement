@@ -8,6 +8,8 @@
 #endif //STAFFINFOMANAGEMENT_MENU_H
 
 int adminMode;
+int exitSystem;
 
 void showMenu();
 void selectOption();
+void enterAdminMode(char *password,char *inputPassword);
