@@ -50,23 +50,23 @@ void enterPassword(char *a) //用于隐藏输入的密码
 {
     for (int i = 0; i < 15; ++i)
     {
-        int startPosition = whereY();
+        int startPosition = whereX();
         char inputValue = (char) getch();
         if (inputValue == '\r')
         {
             printf("\n\n");
             break;
         }
-        else if (inputValue == BACKSPACE)
+        else if (inputValue == BACKSPACE)   //退格
         {
-            //if (whereY() > startPosition)
+            if (whereX() > startPosition)
             {
                 printf("\b ");
                 printf("\b");
             }
             i -= i;
         }
-        else
+        else    //用*表示密码
         {
             *(a + i) = inputValue;
             printf("*");
