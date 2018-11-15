@@ -56,6 +56,9 @@ void selectOption()
                 break;
             default:
                 system("cls");
+                printf("No such option. Press Enter to return\n");
+                getch();
+                system("cls");
                 break;
         }
     }

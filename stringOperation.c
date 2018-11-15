@@ -34,7 +34,7 @@ int whereX()
 {
     CONSOLE_SCREEN_BUFFER_INFO pBuffer;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &pBuffer);
-    return (pBuffer.dwCursorPosition.X+1);
+    return (pBuffer.dwCursorPosition.X + 1);
 }
 
 //获取光标的位置y
@@ -42,7 +42,7 @@ int whereY()
 {
     CONSOLE_SCREEN_BUFFER_INFO pBuffer;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &pBuffer);
-    return (pBuffer.dwCursorPosition.Y+1);
+    return (pBuffer.dwCursorPosition.Y + 1);
 }
 
 
@@ -52,24 +52,32 @@ void enterPassword(char *a) //用于隐藏输入的密码
     {
         int startPosition = whereX();
         char inputValue = (char) getch();
-        if (inputValue == '\r')
+        if (i == 14)
         {
-            printf("\n\n");
-            break;
-        }
-        else if (inputValue == BACKSPACE)   //退格
-        {
-            if (whereX() > startPosition)
+            if (inputValue == '\r')
             {
-                printf("\b ");
-                printf("\b");
+                break;
             }
-            i -= i;
+            else if (inputValue == BACKSPACE)   //退格
+            {
+                int coord = whereX();
+                //if (coord > startPosition)
+                {
+                    printf("\b ");
+                    printf("\b");
+                }
+                i -= i;
+            }
+            else    //用*表示密码
+            {
+                *(a + i) = inputValue;
+                printf("*");
+            }
         }
-        else    //用*表示密码
+        else
         {
-            *(a + i) = inputValue;
-            printf("*");
+            fflush(stdin);
+            i -= 1;
         }
     }
 }
