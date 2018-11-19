@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "stringOperation.h"
 #include "conio.h"
+#include "csvFile.h"
 
 int adminMode = 0;
 int exitSystem = 1; //用于控制主循环
@@ -47,6 +48,7 @@ void selectOption()
         switch (selected)
         {
             case 1:       //查询功能
+                sheetQuery();
                 break;
             case 2:       //管理员模式
                 enterAdminMode(password);
