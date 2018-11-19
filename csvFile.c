@@ -11,6 +11,7 @@
 #define false 0
 #define true 1
 
+#include "stringOperation.h"
 char ***Sheet;
 int row = 0;    //行数
 int line = 0;   //列数
@@ -57,8 +58,9 @@ char ***sheetOpen()
             }
         }
     }
-
-    Sheet = sheet;
+    char *** st = (char ***) malloc(sizeof(line * row * 100));
+    ***st = sheet;
+    return st;
 
 }
 
@@ -75,7 +77,7 @@ char ***sheetQuery()
     {
         for (int j = 0; j < row; ++j)
         {
-            if (sheet[i][j] == queryContent)
+            if (compareString())
             {
                 printf("");
                 haveFound = true;
