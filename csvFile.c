@@ -76,7 +76,13 @@ char ***sheetOpen(int openMode)
     {
         char *str = malloc(100 * sizeof(char));
         fgets(str, 100, temp);
-        char *a = strtok(str, ",");
+        char *a = malloc(100 * sizeof(char));
+        for (int l = 0; l < 100; ++l)
+        {
+            *(a + l) = '\0';
+        }
+
+        a = strtok(str, ",");
 
         // 将表格内容存入数组
         for (int k = 0; k < 100; ++k)
@@ -99,7 +105,7 @@ char ***sheetOpen(int openMode)
                 st[j][i][k] = a[k];
             }
         }
-
+        free(a);
         free(str);
     }
 
