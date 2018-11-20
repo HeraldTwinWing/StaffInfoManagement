@@ -13,4 +13,5 @@
 
 char ***Sheet;
 char ***sheetOpen();
-char ***sheetQuery();
+void sheetQuery();
+void create3DArray();

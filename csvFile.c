@@ -12,6 +12,7 @@
 #define true 1
 
 #include "stringOperation.h"
+
 char ***Sheet;
 int row = 0;    //行数
 int line = 0;   //列数
@@ -35,36 +36,67 @@ char ***sheetOpen()
         {
             line++;
         }
-        else if (a == ' ' && line == 0)
+        else if (a == ',' && line == 0)
         {
             row++;
         }
     }
 
+    // 动态申请2维字符串数组，用于存放文件内容
     temp = fopen("Staff.csv", "r");
-    char sheet[line][row][100];
-
-    //将文件内容存入数组
-    for (int i = 0; i < line; ++i)
+    char ***st = NULL;
+    st = (char ***) malloc(line * sizeof(char **));
+    for (int l = 0; l < line; ++l)
     {
-        char row1[10][100] = {0};
-        fscanf(temp, "%s %s %s %s %s %s %s", row1[0], row1[1], row1[2], row1[3], row1[4], row1[5], row1[6]);
-
-        for (int j = 0; j < row; ++j)
+        st[l] = (char **) malloc(row * sizeof(char *));
+        for (int i = 0; i < row; ++i)
         {
-            for (int k = 0; k < 100; ++k)
+            st[l][i] = (char *) malloc(100 * sizeof(char));
+
+            // 初始化数组
+            for (int j = 0; j < 100; ++j)
             {
-                sheet[i][j][k] = row1[j][k];
+                st[l][i][j] = '\0';
             }
         }
     }
-    char *** st = (char ***) malloc(sizeof(line * row * 100));
-    ***st = sheet;
-    return st;
 
+    //将文件内容存入数组
+    for (int j = 0; j < line; ++j)
+    {
+        char *str = malloc(100 * sizeof(char));
+        fgets(str, 100, temp);
+        char * a = strtok(str, ",");
+
+        for (int k = 0; k < 100; ++k)
+        {
+            if (a[k] == '\0')
+            {
+                break;
+            }
+            st[j][0][k] = a[k];
+        }
+
+        for (int i = 1 ; i < row; ++i)
+        {
+            a = strtok(NULL, ",");
+            for (int k = 0; k < 100; ++k)
+            {
+                if (a[k] == '\0')
+                {
+                    break;
+                }
+                st[j][i][k] = a[k];
+            }
+        }
+
+        free(str);
+    }
+
+    return st;
 }
 
-char ***sheetQuery()
+void sheetQuery()
 {
     char ***sheet = sheetOpen();
 
@@ -73,13 +105,15 @@ char ***sheetQuery()
     BOOL haveFound = false;
     int whereTheLine = 0;
 
+    system("cls");
+
+    // 对比查询内容
     for (int i = 0; i < line; ++i)
     {
         for (int j = 0; j < row; ++j)
         {
-            if (compareString())
+            if (compareString(sheet[i][j], queryContent))
             {
-                printf("");
                 haveFound = true;
                 whereTheLine = i;
             }
@@ -88,9 +122,11 @@ char ***sheetQuery()
 
     if (haveFound == false)
     {
-        printf("The specified content was not found");
+        printf("The specified content was not found\n");
+        getch();
+        system("cls");
     }
-    else if (haveFound == true)
+    else
     {
         for (int j = 0; j < 2; ++j)
         {
@@ -100,12 +136,29 @@ char ***sheetQuery()
                 {
                     j = whereTheLine;
                 }
-                printf("%s", sheet[j][i]);
+                printf("%s\t  ", sheet[j][i]);
             }
             if (j == whereTheLine)
             {
                 break;
             }
+        }
+        getch();
+        system("cls");
+    }
+    free(sheet);
+}
+
+void create3DArray()
+{
+    char ***st = NULL;
+    st = (char ***) malloc(line * sizeof(char **));
+    for (int l = 0; l < line; ++l)
+    {
+        st[l] = (char **) malloc(row * sizeof(char *));
+        for (int i = 0; i < row; ++i)
+        {
+            st[l][i] = (char *) malloc(100 * sizeof(char));
         }
     }
 }
