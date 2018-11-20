@@ -80,6 +80,9 @@ void selectOption()
                 break;
             case 6:
                 adminMode = 0;
+            default:
+                system("cls");
+                break;
         }
     }
 }
@@ -99,7 +102,7 @@ void enterAdminMode(char *password) //清屏并显示进入管理员模式
         system("cls");
         printf("Password Error!\n");
         printf("Press ENTER to retry. Press the other keys to return\n");
-        char pressKey = '0';
+        char pressKey;
         pressKey = (char) getch();
         switch (pressKey)
         {

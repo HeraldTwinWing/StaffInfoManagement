@@ -6,22 +6,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "stringOperation.h"
 
 #define BOOL int
 #define false 0
 #define true 1
 
-#include "stringOperation.h"
 
-char ***Sheet;
 int row = 0;    //行数
 int line = 0;   //列数
 
-char ***sheetOpen()
+char ***sheetOpen(int openMode)
 {
     FILE *csv;
     FILE *temp;
-    csv = fopen("Staff.csv", "r");
+
+    /* openMode:
+     * 0: 读
+     * 1: 写
+     */
+    if (openMode == 0)
+    {
+        csv = fopen("Staff.csv", "r");
+    }
+    else if (openMode == 1)
+    {
+        csv = fopen("Staff.csv", "w");
+    }
 
     //统计文件行数和列数
     while (1)
@@ -31,8 +42,7 @@ char ***sheetOpen()
         {
             break;
         }
-
-        if (a == '\n')
+        else if (a == '\n')
         {
             line++;
         }
@@ -61,13 +71,13 @@ char ***sheetOpen()
         }
     }
 
-    //将文件内容存入数组
     for (int j = 0; j < line; ++j)
     {
         char *str = malloc(100 * sizeof(char));
         fgets(str, 100, temp);
-        char * a = strtok(str, ",");
+        char *a = strtok(str, ",");
 
+        // 将表格内容存入数组
         for (int k = 0; k < 100; ++k)
         {
             if (a[k] == '\0')
@@ -76,8 +86,7 @@ char ***sheetOpen()
             }
             st[j][0][k] = a[k];
         }
-
-        for (int i = 1 ; i < row; ++i)
+        for (int i = 1; i < row; ++i)
         {
             a = strtok(NULL, ",");
             for (int k = 0; k < 100; ++k)
@@ -98,7 +107,7 @@ char ***sheetOpen()
 
 void sheetQuery()
 {
-    char ***sheet = sheetOpen();
+    char ***sheet = sheetOpen(0);
 
     char queryContent[100];
     scanf("%s", queryContent);
@@ -107,7 +116,7 @@ void sheetQuery()
 
     system("cls");
 
-    // 对比查询内容
+    // 对比查询内容,搜索查询内容所在列
     for (int i = 0; i < line; ++i)
     {
         for (int j = 0; j < row; ++j)
@@ -128,19 +137,25 @@ void sheetQuery()
     }
     else
     {
-        for (int j = 0; j < 2; ++j)
+        // 输出表头
+        for (int i = 0; i < row; ++i)
         {
-            for (int i = 0; i < row; ++i)
+            printf("%s\t", sheet[0][i]);
+            // 格式化
+            if (i == 1)
             {
-                if (j == 1)
-                {
-                    j = whereTheLine;
-                }
-                printf("%s\t  ", sheet[j][i]);
+                printf("\t");
             }
-            if (j == whereTheLine)
+        }
+
+        printf("\n");
+        for (int j = 0; j < row; ++j)
+        {
+            printf("%s\t", sheet[whereTheLine][j]);
+            // 格式化
+            if (j == 2 || j == 5)
             {
-                break;
+                printf("\t");
             }
         }
         getch();
