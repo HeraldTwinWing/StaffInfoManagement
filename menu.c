@@ -95,6 +95,7 @@ void selectOption()
                 break;
         }
     }
+
 }
 
 void enterAdminMode(char *password) //清屏并显示进入管理员模式

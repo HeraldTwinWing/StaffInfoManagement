@@ -7,11 +7,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "stringOperation.h"
+#include <string.h>
 
 #define BOOL int
 #define false 0
 #define true 1
-
 
 int row = 0;    //行数
 int line = 0;   //列数
@@ -41,6 +41,7 @@ char ***sheetOpen(int openMode)
         char a = (char) getc(csv);
         if (a == EOF)
         {
+            line ++;
             break;
         }
         else if (a == '\n')
@@ -85,31 +86,33 @@ char ***sheetOpen(int openMode)
         a = strtok(str, ",");
 
         // 将表格内容存入数组
-        for (int k = 0; k < 100; ++k)
+        for (int k = 0; k < sizeof(st[j][0]); ++k)
         {
             if (a[k] == '\0')
             {
                 break;
             }
-            st[j][0][k] = a[k];
+            //st[j][0][k] = a[k];
+            strcpy(st[j][0], a);
         }
         for (int i = 1; i < row; ++i)
         {
             a = strtok(NULL, ",");
-            for (int k = 0; k < 100; ++k)
+            for (int k = 0; k < sizeof(st[j][i]); ++k)
             {
                 if (a[k] == '\0')
                 {
                     break;
                 }
-                st[j][i][k] = a[k];
+                //st[j][i][k] = a[k];
+                strcpy(st[j][i], a);
             }
         }
         free(a);
         free(str);
     }
 
-    fclose(csv);
+    fclose(temp);
     return st;
 }
 
@@ -127,6 +130,9 @@ void sheetQuery(BOOL adminMode, char *ID)
         scanf("%s", queryContent);
         queryContents(queryContent);
     }
+
+    line = 0;
+    row = 0;
 }
 
 void queryContents(char queryContent[])
