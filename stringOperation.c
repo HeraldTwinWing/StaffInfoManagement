@@ -50,9 +50,9 @@ void enterPassword(char *a) //用于隐藏输入的密码
 {
     for (int i = 0; i < 15; ++i)
     {
-        int startPosition = whereX();
+        //int startPosition = whereX();
         char inputValue = (char) getch();
-        if (i == 14)
+        if (i != 14)
         {
             if (inputValue == '\r')
             {

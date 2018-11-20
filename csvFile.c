@@ -25,13 +25,14 @@ char ***sheetOpen(int openMode)
      * 0: 读
      * 1: 写
      */
-    if (openMode == 0)
+    switch (openMode)
     {
-        csv = fopen("Staff.csv", "r");
-    }
-    else if (openMode == 1)
-    {
-        csv = fopen("Staff.csv", "w");
+        case 1:
+            csv = fopen("Staff.csv", "w");
+            break;
+        default:
+            csv = fopen("Staff.csv", "r");
+            break;
     }
 
     //统计文件行数和列数
@@ -102,19 +103,31 @@ char ***sheetOpen(int openMode)
         free(str);
     }
 
+    fclose(csv);
     return st;
 }
 
-void sheetQuery()
+void sheetQuery(BOOL adminMode, char *ID)
+{
+    char queryContent[100];
+
+    if (adminMode == false)
+    {
+        strcpy(queryContent, ID);
+        queryContents(queryContent);
+    }
+    else
+    {
+        scanf("%s", queryContent);
+        queryContents(queryContent);
+    }
+}
+
+void queryContents(char queryContent[])
 {
     char ***sheet = sheetOpen(0);
-
-    char queryContent[100];
-    scanf("%s", queryContent);
     BOOL haveFound = false;
     int whereTheLine = 0;
-
-    system("cls");
 
     // 对比查询内容,搜索查询内容所在列
     for (int i = 0; i < line; ++i)
@@ -158,11 +171,12 @@ void sheetQuery()
                 printf("\t");
             }
         }
-        getch();
+        getchar();
         system("cls");
     }
     free(sheet);
 }
+
 
 void create3DArray()
 {

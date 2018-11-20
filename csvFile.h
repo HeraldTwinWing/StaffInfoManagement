@@ -10,8 +10,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define BOOL int
+#define false 0
+#define true 1
 
-char ***Sheet;
-char ***sheetOpen();
-void sheetQuery();
+char ***sheetOpen(int openMode);
+void sheetQuery(BOOL adminMode, char* ID);
+void queryContents(char queryContent[]);
+void sheetModfiy();
 void create3DArray();

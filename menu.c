@@ -10,11 +10,20 @@
 #include "conio.h"
 #include "csvFile.h"
 
-int adminMode = 0;
+int adminMode = false;
+int login = false;
 int exitSystem = 1; //用于控制主循环
+char ID[100];
 
 void showMenu()
 {
+    if (login == false)
+    {
+        printf("Please enter your ID:");
+        scanf("%s", ID);
+        login = true;
+        system("cls");
+    }
     if (adminMode == 0)
     {
         printf("==========User Mode==========\n");
@@ -48,7 +57,7 @@ void selectOption()
         switch (selected)
         {
             case 1:       //查询功能
-                sheetQuery();
+                sheetQuery(false, ID);
                 break;
             case 2:       //管理员模式
                 enterAdminMode(password);
@@ -69,6 +78,7 @@ void selectOption()
         switch (selected)
         {
             case 1:
+                sheetQuery(true, ID);
                 break;
             case 2:
                 break;
