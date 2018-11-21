@@ -16,24 +16,13 @@
 int row = 0;    //行数
 int line = 0;   //列数
 
-char ***sheetOpen(int openMode)
-{
-    FILE *csv;
-    FILE *temp;
 
-    /* openMode:
-     * 0: 读
-     * 1: 写
-     */
-    switch (openMode)
-    {
-        case 1:
-            csv = fopen("Staff.csv", "w");
-            break;
-        default:
-            csv = fopen("Staff.csv", "r");
-            break;
-    }
+char ***sheetOpen()
+{
+    FILE *temp;
+    FILE *csv;
+
+    csv = fopen("Staff.csv", "r");
 
     //统计文件行数和列数
     while (1)
@@ -41,7 +30,7 @@ char ***sheetOpen(int openMode)
         char a = (char) getc(csv);
         if (a == EOF)
         {
-            line ++;
+            line++;
             break;
         }
         else if (a == '\n')
@@ -56,6 +45,7 @@ char ***sheetOpen(int openMode)
 
     // 动态申请2维字符串数组，用于存放文件内容
     temp = fopen("Staff.csv", "r");
+
     char ***st = NULL;
     st = (char ***) malloc(line * sizeof(char **));
     for (int l = 0; l < line; ++l)
@@ -92,15 +82,16 @@ char ***sheetOpen(int openMode)
         for (int i = 1; i < row; ++i)
         {
             a = strtok(NULL, ",");
-            for (int k = 0; k < sizeof(st[j][i]); ++k)
+            /*for (int k = 0; k < sizeof(st[j][0]); ++k)
             {
                 if (a[k] == '\0')
                 {
                     break;
                 }
-                //st[j][i][k] = a[k];
-                strcpy(st[j][i], a);
-            }
+                //st[j][0][k] = a[k];
+
+            }*/
+            strcpy(st[j][i], a);
         }
 
         free(str);
@@ -112,39 +103,40 @@ char ***sheetOpen(int openMode)
 
 void sheetQuery(BOOL adminMode, char *ID)
 {
+    char ***sheet = sheetOpen();
     char queryContent[100];
 
     if (adminMode == false)
     {
         strcpy(queryContent, ID);
-        queryContents(queryContent);
+        queryContents(sheet, queryContent);
     }
     else
     {
+        printf("Please enter ID that you want to query:");
         scanf("%s", queryContent);
-        queryContents(queryContent);
+        queryContents(sheet, queryContent);
     }
 
+    getch();
+    system("cls");
     line = 0;
     row = 0;
+    //fclose(csv);
 }
 
-void queryContents(char queryContent[])
+int queryContents(char ***sheet, char queryContent[])
 {
-    char ***sheet = sheetOpen(0);
     BOOL haveFound = false;
     int whereTheLine = 0;
 
-    // 对比查询内容,搜索查询内容所在列
+    // 对比查询内容,搜索查询内容所在行
     for (int i = 0; i < line; ++i)
     {
-        for (int j = 0; j < row; ++j)
+        if (compareString(sheet[i][0], queryContent))
         {
-            if (compareString(sheet[i][j], queryContent))
-            {
-                haveFound = true;
-                whereTheLine = i;
-            }
+            haveFound = true;
+            whereTheLine = i;
         }
     }
 
@@ -177,12 +169,62 @@ void queryContents(char queryContent[])
                 printf("\t");
             }
         }
-        getchar();
-        system("cls");
+        printf("\n");
     }
     free(sheet);
 }
 
+void sheetContentRemove()
+{
+    char ***sheet = sheetOpen();
+    char *ID = NULL;
+
+    printf("Enter ID you want to remove:");
+    scanf("%s", ID);
+
+    int whereTheLine = 0;
+    whereTheLine = queryContents(sheet, ID);
+
+    printf("Do you want to remove this ID and its all contents?[Y/N]");
+    BOOL remove = false;
+    while (true)
+    {
+        int a = getch();
+        if (a == 89 || a == 121)
+        {
+            remove = true;
+            break;
+        }
+        else if (a == 78 || a == 110)
+        {
+            break;
+        }
+    }
+
+    if (remove == true)
+    {
+        for (int i = 0; i < row; ++i)
+        {
+            sheet[whereTheLine][i] = NULL;
+        }
+    }
+
+    FILE *csv = fopen("Staff.csv", "w");
+    for (int j = 0; j < line; ++j)
+    {
+        for (int i = 0; i < row; ++i)
+        {
+            fputs(sheet[j][i], csv);
+            if (i != row - 1)
+            {
+                fputc(',', csv);
+            }
+        }
+        fputc('\n', csv);
+    }
+    free(sheet);
+    fclose(csv);
+}
 
 void create3DArray()
 {
