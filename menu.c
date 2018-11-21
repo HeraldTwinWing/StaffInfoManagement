@@ -85,6 +85,7 @@ void selectOption()
             case 3:
                 break;
             case 4:
+                sheetContentRemove();
                 break;
             case 5:
                 break;

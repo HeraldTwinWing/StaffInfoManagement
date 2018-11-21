@@ -15,7 +15,13 @@
 #define true 1
 
 char ***sheetOpen(int openMode);
-void sheetQuery(BOOL adminMode, char* ID);
-void queryContents(char queryContent[]);
+
+void sheetQuery(BOOL adminMode, char *ID);
+
+int queryContents(char ***sheet, char queryContent[]);
+
+void sheetContentRemove();
+
 void sheetModfiy();
+
 void create3DArray();
