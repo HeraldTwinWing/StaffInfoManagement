@@ -51,6 +51,8 @@ void enterPassword(char *a) //用于隐藏输入的密码
     for (int i = 0; i < 15; ++i)
     {
         //int startPosition = whereX();
+        //char inputValue;
+        //scanf("%c", &inputValue);
         char inputValue = (char) getch();
         if (i != 14)
         {

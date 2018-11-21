@@ -15,25 +15,14 @@
 
 int row = 0;    //行数
 int line = 0;   //列数
-FILE *csv;
 
-char ***sheetOpen(int openMode)
+
+char ***sheetOpen()
 {
     FILE *temp;
+    FILE *csv;
 
-    /* openMode:
-     * 0: 读
-     * 1: 写
-     */
-    switch (openMode)
-    {
-        case 1:
-            csv = fopen("Staff.csv", "w+");
-            break;
-        default:
-            csv = fopen("Staff.csv", "r");
-            break;
-    }
+    csv = fopen("Staff.csv", "r");
 
     //统计文件行数和列数
     while (1)
@@ -56,6 +45,7 @@ char ***sheetOpen(int openMode)
 
     // 动态申请2维字符串数组，用于存放文件内容
     temp = fopen("Staff.csv", "r");
+
     char ***st = NULL;
     st = (char ***) malloc(line * sizeof(char **));
     for (int l = 0; l < line; ++l)
@@ -98,15 +88,16 @@ char ***sheetOpen(int openMode)
         for (int i = 1; i < row; ++i)
         {
             a = strtok(NULL, ",");
-            for (int k = 0; k < sizeof(st[j][i]); ++k)
+            /*for (int k = 0; k < sizeof(st[j][0]); ++k)
             {
                 if (a[k] == '\0')
                 {
                     break;
                 }
-                //st[j][i][k] = a[k];
-                strcpy(st[j][i], a);
-            }
+                //st[j][0][k] = a[k];
+
+            }*/
+            strcpy(st[j][i], a);
         }
         free(a);
         free(str);
@@ -118,7 +109,7 @@ char ***sheetOpen(int openMode)
 
 void sheetQuery(BOOL adminMode, char *ID)
 {
-    char ***sheet = sheetOpen(0);
+    char ***sheet = sheetOpen();
     char queryContent[100];
 
     if (adminMode == false)
@@ -137,7 +128,7 @@ void sheetQuery(BOOL adminMode, char *ID)
     system("cls");
     line = 0;
     row = 0;
-    fclose(csv);
+    //fclose(csv);
 }
 
 int queryContents(char ***sheet, char queryContent[])
@@ -191,7 +182,7 @@ int queryContents(char ***sheet, char queryContent[])
 
 void sheetContentRemove()
 {
-    char ***sheet = sheetOpen(1);
+    char ***sheet = sheetOpen();
     char *ID = NULL;
 
     printf("Enter ID you want to remove:");
@@ -224,6 +215,7 @@ void sheetContentRemove()
         }
     }
 
+    FILE *csv = fopen("Staff.csv", "w");
     for (int j = 0; j < line; ++j)
     {
         for (int i = 0; i < row; ++i)

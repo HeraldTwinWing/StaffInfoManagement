@@ -14,7 +14,7 @@
 #define false 0
 #define true 1
 
-char ***sheetOpen(int openMode);
+char ***sheetOpen();
 
 void sheetQuery(BOOL adminMode, char *ID);
 
