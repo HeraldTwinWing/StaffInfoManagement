@@ -17,6 +17,11 @@
 #include <windows.h>
 
 int compareString(char *a, char *b);
+
 void enterPassword(char *a);
+
+int invertBOOL(int a);
+
 int whereX();
+
 int whereY();

@@ -118,7 +118,16 @@ void sheetQuery(BOOL adminMode, char *ID)
         queryContents(sheet, queryContent);
     }
 
-    getch();
+    printf("Press enter to continue.\n");
+    while (true)
+    {
+        int pressKey = getch();
+        if(pressKey == 13)
+        {
+            break;
+        }
+    }
+
     system("cls");
     line = 0;
     row = 0;
@@ -143,8 +152,8 @@ int queryContents(char ***sheet, char queryContent[])
     if (haveFound == false)
     {
         printf("The specified content was not found\n");
-        getch();
-        system("cls");
+//        getch();
+//        system("cls");
     }
     else
     {
@@ -171,13 +180,14 @@ int queryContents(char ***sheet, char queryContent[])
         }
         printf("\n");
     }
-    free(sheet);
+    //free(sheet);
+    return whereTheLine;
 }
 
 void sheetContentRemove()
 {
     char ***sheet = sheetOpen();
-    char *ID = NULL;
+    char ID[10] = {0};
 
     printf("Enter ID you want to remove:");
     scanf("%s", ID);
@@ -189,7 +199,9 @@ void sheetContentRemove()
     BOOL remove = false;
     while (true)
     {
-        int a = getch();
+        //int a = getch();
+        char a = 0;
+        scanf("%c", &a);
         if (a == 89 || a == 121)
         {
             remove = true;
@@ -205,7 +217,7 @@ void sheetContentRemove()
     {
         for (int i = 0; i < row; ++i)
         {
-            sheet[whereTheLine][i] = NULL;
+            sheet[whereTheLine][i] = "";
         }
     }
 
@@ -215,7 +227,7 @@ void sheetContentRemove()
         for (int i = 0; i < row; ++i)
         {
             fputs(sheet[j][i], csv);
-            if (i != row - 1)
+            if (i != row - 1 && invertBOOL(compareString(sheet[j][i], "")))
             {
                 fputc(',', csv);
             }

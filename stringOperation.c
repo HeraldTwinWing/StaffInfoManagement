@@ -29,6 +29,22 @@ int compareString(char *a, char *b) //比较两个字符串是否相同
     }
 }
 
+int invertBOOL(int a)
+{
+    switch (a)
+    {
+        case 1:
+            a = 0;
+            break;
+        case 0:
+            a = 1;
+            break;
+        default:
+            break;
+    }
+    return a;
+}
+
 //获取光标的位置x
 int whereX()
 {
@@ -62,7 +78,7 @@ void enterPassword(char *a) //用于隐藏输入的密码
             }
             else if (inputValue == BACKSPACE)   //退格
             {
-                int coord = whereX();
+                //int coord = whereX();
                 //if (coord > startPosition)
                 {
                     printf("\b ");
