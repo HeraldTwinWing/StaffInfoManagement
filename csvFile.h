@@ -22,10 +22,17 @@ int queryContents(char ***sheet, char queryContent[]);
 
 void sheetContentRemove();
 
+//遍历表格，查询所有符合内容所在行
+int *traverse(char *queryContent, int queryROw);
+
+void queryByApart();
+
 //初始化line和row变量
 //涉及文件读取的操作，结束时必须调用函数
 void refreshLineAndRowTemp();
 
+void sheetAddLine();
+
 void sheetModfiy();
 
-void create3DArray();
+char ***create3DArray();

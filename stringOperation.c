@@ -64,30 +64,36 @@ int whereY()
 
 void enterPassword(char *a) //用于隐藏输入的密码
 {
+    int pressCount = 0;
     for (int i = 0; i < 15; ++i)
     {
-        //int startPosition = whereX();
-        //char inputValue;
-        //scanf("%c", &inputValue);
         char inputValue = (char) getch();
+
+        if (inputValue == BACKSPACE )   //退格
+        {
+            if (pressCount > 0)
+            {
+                pressCount--;
+                printf("\b ");
+                printf("\b");
+
+                i -= 1;
+            }
+            {
+                i -= 1;
+            }
+            continue;
+        }
+
         if (i != 14)
         {
             if (inputValue == '\r')
             {
                 break;
             }
-            else if (inputValue == BACKSPACE)   //退格
+            else   //用*表示密码
             {
-                //int coord = whereX();
-                //if (coord > startPosition)
-                {
-                    printf("\b ");
-                    printf("\b");
-                }
-                i -= i;
-            }
-            else    //用*表示密码
-            {
+                pressCount++;
                 *(a + i) = inputValue;
                 printf("*");
             }

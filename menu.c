@@ -37,11 +37,12 @@ void showMenu()
         printf("=========Admin Mode==========\n");
         printf("Enter serial number to chose\n");
         printf("1: Query by job number\n");
-        printf("2: Entry\n");
-        printf("3: Modify\n");
-        printf("4: Delete\n");
-        printf("5: Change Password\n");
-        printf("6: Exit Admin Mode\n");
+        printf("2: Query whole department\n");
+        printf("3: Entry\n");
+        printf("4: Modify\n");
+        printf("5: Delete\n");
+        printf("6: Change Password\n");
+        printf("7: Exit Admin Mode\n");
     }
 }
 
@@ -82,16 +83,21 @@ void selectOption()
                 sheetQuery(true, ID);
                 break;
             case 2:
+                queryByApart();
                 break;
             case 3:
+                sheetAddLine();
                 break;
             case 4:
-                sheetContentRemove();
                 break;
             case 5:
+                sheetContentRemove();
                 break;
             case 6:
+                break;
+            case 7:
                 adminMode = 0;
+                break;
             default:
                 system("cls");
                 break;

@@ -19,6 +19,7 @@ int line = 0;   //列数
 
 char ***sheetOpen()
 {
+    refreshLineAndRowTemp();
     FILE *temp;
     FILE *csv;
 
@@ -30,10 +31,7 @@ char ***sheetOpen()
         char a = (char) getc(csv);
         if (a == EOF)
         {
-            if (a - 1 != '\n')
-            {
-                line++;
-            }
+            row++;
             break;
         }
         else if (a == '\n')
@@ -89,16 +87,14 @@ char ***sheetOpen()
         }
         for (int i = 1; i < row; ++i)
         {
-            a = strtok(NULL, ",");
-            /*for (int k = 0; k < sizeof(st[j][0]); ++k)
+            if (i == 7)
             {
-                if (a[k] == '\0')
-                {
-                    break;
-                }
-                //st[j][0][k] = a[k];
-
-            }*/
+                a = strtok(NULL, "\n");
+            }
+            else
+            {
+                a = strtok(NULL, ",");
+            }
             strcpy(st[j][i], a);
         }
 
@@ -137,7 +133,7 @@ void sheetQuery(BOOL adminMode, char *ID)
     }
 
     system("cls");
-    refreshLineAndRowTemp();
+    //refreshLineAndRowTemp();
     //fclose(csv);
 }
 
@@ -181,7 +177,6 @@ int queryContents(char ***sheet, char queryContent[])
                 printf("\t");
             }
         }
-
         printf("\n");
         for (int j = 0; j < row; ++j)
         {
@@ -254,7 +249,7 @@ void sheetContentRemove()
     }
 
     free(sheet);
-    refreshLineAndRowTemp();
+    //refreshLineAndRowTemp();
     system("cls");
 }
 
@@ -265,7 +260,147 @@ void refreshLineAndRowTemp()
     row = 0;
 }
 
-void create3DArray()
+int *traverse(char *queryContent, int queryRow)
+{
+    queryRow--;
+    char ***csv = sheetOpen();
+
+    int countLines = 0;
+    int *whereTheLines = NULL;
+    int arrayPos = 1;
+    for (int j = 0; j < 2; ++j)
+    {
+        for (int i = 1; i < line; ++i)
+        {
+            BOOL haveFound = false;
+            haveFound = compareString(csv[i][queryRow], queryContent);
+            if (j == 0)
+            {
+                if (haveFound == true)
+                {
+                    countLines++;
+                }
+            }
+            else if (j == 1 || haveFound == true)
+            {
+                whereTheLines[arrayPos] = i;
+                arrayPos++;
+            }
+        }
+        if (j == 0)
+        {
+            whereTheLines = malloc((countLines + 1) * sizeof(int));
+            whereTheLines[0] = countLines;
+        }
+    }
+    free(csv);
+    return whereTheLines;
+}
+
+void queryByApart()
+{
+    printf("Please enter the department you want to list:");
+    char queryContent[100] = {0};
+    scanf("%s", queryContent);
+
+    int *whereTheLines = traverse(queryContent, 3);
+    char ***sheet = sheetOpen();
+
+    // 输出表头
+    for (int i = 0; i < row; ++i)
+    {
+        printf("%s\t", sheet[0][i]);
+        // 格式化
+        if (i == 1)
+        {
+            printf("\t");
+        }
+    }
+    printf("\n");
+
+    // 打印查询到的内容
+    for (int i = 0; i < whereTheLines[0]; ++i)
+    {
+        for (int j = 0; j < row; ++j)
+        {
+            if (i != row - 1)
+            {
+                printf("%s\t", sheet[whereTheLines[i]][j]);
+            }
+            else
+            {
+                printf("%s\n", sheet[whereTheLines[i]][j]);
+            }
+            // 格式化
+            if (j == 2 || j == 5)
+            {
+                printf("\t");
+            }
+        }
+        printf("\n");
+    }
+
+
+    printf("Press enter to continue.\n");
+    while (true)
+    {
+        int pressKey = getch();
+        if (pressKey == 13)
+        {
+            system("cls");
+            break;
+        }
+    }
+
+    free(sheet);
+}
+
+void sheetAddLine()
+{
+    char ***sheet = sheetOpen();
+    FILE *csv = fopen("Staff.csv", "a");
+
+    char inputData[100] = {0};
+
+    for (int i = 0; i < row; ++i)
+    {
+        printf("Please enter the %s:", sheet[0][i]);
+//        scanf("%s", inputData);
+        gets(inputData);
+        //当输入为空时用*占位
+        if (compareString(inputData, ""))
+        {
+            strcpy(inputData, "*");
+        }
+
+        fputs(inputData, csv);
+        if (i != row - 1)
+        {
+            fputc(',', csv);
+        }
+        else
+        {
+            fputc('\n', csv);
+        }
+    }
+
+
+    printf("Entry completed\n");
+    printf("Press enter to continue.\n");
+    while (true)
+    {
+        int pressKey = getch();
+        if (pressKey == 13)
+        {
+            break;
+        }
+    }
+    free(sheet);
+    fclose(csv);
+    system("cls");
+}
+
+char ***create3DArray()
 {
     char ***st = NULL;
     st = (char ***) malloc(line * sizeof(char **));
@@ -277,4 +412,5 @@ void create3DArray()
             st[l][i] = (char *) malloc(100 * sizeof(char));
         }
     }
+    return st;
 }
