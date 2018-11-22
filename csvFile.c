@@ -230,7 +230,6 @@ void sheetContentRemove()
                 sheet[whereTheLine][i] = "";
             }
 
-
             FILE *csv = fopen("Staff.csv", "w");
             for (int j = 0; j < line; ++j)
             {
@@ -242,7 +241,12 @@ void sheetContentRemove()
                         fputc(',', csv);
                     }
                 }
-                fputc('\n', csv);
+
+                //当首列为空的时候，不换行，即跳过空行
+                if (invertBOOL(compareString(sheet[j][0], "")))
+                {
+                    fputc('\n', csv);
+                }
             }
             fclose(csv);
         }
