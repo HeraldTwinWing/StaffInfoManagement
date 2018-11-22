@@ -60,8 +60,8 @@ void selectOption()
                 sheetQuery(false, ID);
                 break;
             case 2:       //管理员模式
-                enterAdminMode(password);
-//                adminMode = true;
+//                enterAdminMode(password);
+                adminMode = true;
                 break;
             case 3:       //退出系统
                 exitSystem = 0;

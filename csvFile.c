@@ -30,7 +30,10 @@ char ***sheetOpen()
         char a = (char) getc(csv);
         if (a == EOF)
         {
-            line++;
+            if (a - 1 != '\n')
+            {
+                line++;
+            }
             break;
         }
         else if (a == '\n')
@@ -69,6 +72,11 @@ char ***sheetOpen()
         fgets(str, 100, temp);
         char *a = strtok(str, ",");
 
+        //检测最后一行是否为空格
+        if (compareString(str, "\r"))
+        {
+            break;
+        }
         // 将表格内容存入数组
         for (int k = 0; k < sizeof(st[j][0]); ++k)
         {
@@ -122,15 +130,14 @@ void sheetQuery(BOOL adminMode, char *ID)
     while (true)
     {
         int pressKey = getch();
-        if(pressKey == 13)
+        if (pressKey == 13)
         {
             break;
         }
     }
 
     system("cls");
-    line = 0;
-    row = 0;
+    refreshLineAndRowTemp();
     //fclose(csv);
 }
 
@@ -152,8 +159,15 @@ int queryContents(char ***sheet, char queryContent[])
     if (haveFound == false)
     {
         printf("The specified content was not found\n");
-//        getch();
-//        system("cls");
+        printf("Press enter to continue.\n");
+        while (true)
+        {
+            int pressKey = getch();
+            if (pressKey == 13)
+            {
+                break;
+            }
+        }
     }
     else
     {
@@ -194,48 +208,61 @@ void sheetContentRemove()
 
     int whereTheLine = 0;
     whereTheLine = queryContents(sheet, ID);
-
-    printf("Do you want to remove this ID and its all contents?[Y/N]");
-    BOOL remove = false;
-    while (true)
+    if (whereTheLine != 0)
     {
-        //int a = getch();
-        char a = 0;
-        scanf("%c", &a);
-        if (a == 89 || a == 121)
+        printf("Do you want to remove this ID and its all contents?[Y/N]");
+        BOOL remove = false;
+        while (true)
         {
-            remove = true;
-            break;
-        }
-        else if (a == 78 || a == 110)
-        {
-            break;
-        }
-    }
-
-    if (remove == true)
-    {
-        for (int i = 0; i < row; ++i)
-        {
-            sheet[whereTheLine][i] = "";
-        }
-    }
-
-    FILE *csv = fopen("Staff.csv", "w");
-    for (int j = 0; j < line; ++j)
-    {
-        for (int i = 0; i < row; ++i)
-        {
-            fputs(sheet[j][i], csv);
-            if (i != row - 1 && invertBOOL(compareString(sheet[j][i], "")))
+            //int a = getch();
+            char a = 0;
+            scanf("%c", &a);
+            if (a == 89 || a == 121)
             {
-                fputc(',', csv);
+                remove = true;
+                break;
+            }
+            else if (a == 78 || a == 110)
+            {
+                break;
             }
         }
-        fputc('\n', csv);
+
+        if (remove == true)
+        {
+            for (int i = 0; i < row; ++i)
+            {
+                sheet[whereTheLine][i] = "";
+            }
+
+
+            FILE *csv = fopen("Staff.csv", "w");
+            for (int j = 0; j < line; ++j)
+            {
+                for (int i = 0; i < row; ++i)
+                {
+                    fputs(sheet[j][i], csv);
+                    if (i != row - 1 && invertBOOL(compareString(sheet[j][i], "")))
+                    {
+                        fputc(',', csv);
+                    }
+                }
+                fputc('\n', csv);
+            }
+            fclose(csv);
+        }
     }
+
     free(sheet);
-    fclose(csv);
+    refreshLineAndRowTemp();
+    system("cls");
+}
+
+//初始化line和row变量
+void refreshLineAndRowTemp()
+{
+    line = 0;
+    row = 0;
 }
 
 void create3DArray()

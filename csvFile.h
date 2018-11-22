@@ -22,6 +22,10 @@ int queryContents(char ***sheet, char queryContent[]);
 
 void sheetContentRemove();
 
+//初始化line和row变量
+//涉及文件读取的操作，结束时必须调用函数
+void refreshLineAndRowTemp();
+
 void sheetModfiy();
 
 void create3DArray();
