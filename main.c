@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "menu.h"
 #include "csvFile.h"
-
+#include "hash.h"
 
 int main()
 {
@@ -11,3 +11,11 @@ int main()
         selectOption();
     }
 }
+
+int main1()
+{
+    int a= RSHash("admin", 15);
+    printf("%d", a);
+}
+
+

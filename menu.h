@@ -12,4 +12,5 @@ int exitSystem;
 
 void showMenu();
 void selectOption();
-void enterAdminMode(char *password);
+void enterAdminMode();
+void changePassword();

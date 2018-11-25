@@ -9,6 +9,7 @@
 #include "stringOperation.h"
 #include "conio.h"
 #include "csvFile.h"
+#include "hash.h"
 
 int adminMode = false;
 int login = false;
@@ -49,7 +50,7 @@ void showMenu()
 void selectOption()
 {
     int selected = 0;
-    char password[15] = "admin";    //密码
+    //char password[15] = "admin";    //密码
     scanf("%d", &selected);
     fflush(stdin);  //刷新缓存区
     system("cls");
@@ -61,7 +62,7 @@ void selectOption()
                 sheetQuery(false, ID);
                 break;
             case 2:       //管理员模式
-                enterAdminMode(password);
+                enterAdminMode();
 //                adminMode = true;
                 break;
             case 3:       //退出系统
@@ -95,6 +96,7 @@ void selectOption()
                 sheetContentRemove();
                 break;
             case 6:
+                changePassword();
                 break;
             case 7:
                 adminMode = 0;
@@ -107,12 +109,17 @@ void selectOption()
 
 }
 
-void enterAdminMode(char *password) //清屏并显示进入管理员模式
+void enterAdminMode() //清屏并显示进入管理员模式
 {
     char inputPassword[15] = "";
+    FILE *pw = fopen("password", "r");
+    int password = 0;
+    fscanf(pw,"%d", &password);
     printf("Please enter the password:");
     enterPassword(inputPassword);   //输入密码
-    if (compareString(password, inputPassword))
+    //scanf("%s", inputPassword);
+    int inputPasswordHash = RSHash(inputPassword, 15);
+    if (inputPasswordHash == password)
     {
         adminMode = 1;  //进入管理员模式
         system("cls");
@@ -128,7 +135,7 @@ void enterAdminMode(char *password) //清屏并显示进入管理员模式
         {
             case '\r':  //重新输入密码
                 system("cls");
-                enterAdminMode(password);
+                enterAdminMode();
                 break;
 //            case 27:    //返回主菜单
 //                system("cls");
@@ -138,4 +145,18 @@ void enterAdminMode(char *password) //清屏并显示进入管理员模式
                 break;
         }
     }
+}
+
+void changePassword()
+{
+    printf("Please Enter the new password:");
+    char newPassword[15] = {0};
+    scanf("%s", newPassword);
+    int newPasswordHash = RSHash(newPassword, 15);
+    FILE *pw = fopen("password", "w");
+    fprintf(pw, "%d", newPasswordHash);
+    fclose(pw);
+    printf("Change completed\n");
+    getch();
+    system("cls");
 }
