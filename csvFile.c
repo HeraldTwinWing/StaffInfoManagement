@@ -404,6 +404,77 @@ void sheetAddLine()
     system("cls");
 }
 
+void sheetModfiy()
+{
+    char ***sheet = sheetOpen();
+    char ID[10] = {0};
+
+    printf("Enter ID you want to modfiy:");
+    scanf("%s", ID);
+
+    int whereTheLine = 0;
+    whereTheLine = queryContents(sheet, ID);
+
+    if (whereTheLine != 0)
+    {
+        printf("Please enter the hear of row you want to change:");
+        char changeRow[100] = {0};
+        scanf("%s", changeRow);
+
+        printf("\n");
+        printf("Please enter the content:");
+        char content[100] = {0};
+        getchar();
+        gets(content);
+        if (content[0] == '\0')
+        {
+            content[0] = '*';
+        }
+
+        char *listHead[8] = {"ID", "name", "department", "age", "sex", "birthday", "phonenumber", "address"};
+        int targetRow = 0;
+
+        if (compareString(changeRow, "exit"))
+        {
+            free(sheet);
+            system("cls");
+            return;
+        }
+        else
+        {
+            for (int i = 0; i < row; ++i)
+            {
+                BOOL found = compareString(listHead[i], changeRow);
+                if (found == true)
+                {
+                    targetRow = i;
+                }
+            }
+        }
+
+        sheet[whereTheLine][targetRow] = content;
+    }
+
+    FILE *csv = fopen("Staff.csv", "w");
+    for (int j = 0; j < line; ++j)
+    {
+        for (int i = 0; i < row; ++i)
+        {
+            fputs(sheet[j][i], csv);
+            if (i != row - 1)
+            {
+                fputc(',', csv);
+            }
+        }
+        fputc('\n', csv);
+    }
+    printf("\nModfiy completed\n");
+    getch();
+    fclose(csv);
+    free(sheet);
+    system("cls");
+}
+
 char ***create3DArray()
 {
     char ***st = NULL;

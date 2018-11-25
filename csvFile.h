@@ -18,12 +18,14 @@ char ***sheetOpen();
 
 void sheetQuery(BOOL adminMode, char *ID);
 
+//该函数功能将查询表格的所有内容，并返回第一个匹配值所在行
 int queryContents(char ***sheet, char queryContent[]);
 
 void sheetContentRemove();
 
-//遍历表格，查询所有符合内容所在行
-int *traverse(char *queryContent, int queryROw);
+//遍历表格，查询所有符合内容所在行，返回所有匹配值所在行
+//queryRow参数为查询的列，从1开始计算
+int *traverse(char *queryContent, int queryRow);
 
 void queryByApart();
 
