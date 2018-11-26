@@ -184,7 +184,14 @@ int queryContents(char ***sheet, char queryContent[])
             // 格式化
             if (j == 2 || j == 5)
             {
-                printf("\t");
+                if (strlen(sheet[whereTheLine][j]) < 4)
+                {
+                    printf("\t\t");
+                }
+                else
+                {
+                    printf("\t");
+                }
             }
         }
         printf("\n");
@@ -336,6 +343,10 @@ void queryByApart()
                 printf("%s\n", sheet[whereTheLines[i]][j]);
             }
             // 格式化
+            if (j == 1 && strlen(sheet[whereTheLines[i]][j]) <= 4)
+            {
+                printf("\t");
+            }
             if (j == 2 || j == 5)
             {
                 printf("\t");
