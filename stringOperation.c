@@ -61,6 +61,14 @@ int whereY()
     return (pBuffer.dwCursorPosition.Y + 1);
 }
 
+//设置光标的位置
+void gotoxy(int x,int y)
+{
+    COORD c;
+    c.X=x-1;
+    c.Y=y-1;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),c);
+}
 
 void enterPassword(char *a) //用于隐藏输入的密码
 {

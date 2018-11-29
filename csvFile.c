@@ -180,18 +180,32 @@ int queryContents(char ***sheet, char queryContent[])
         printf("\n");
         for (int j = 0; j < row; ++j)
         {
-            printf("%s\t", sheet[whereTheLine][j]);
-            // 格式化
-            if (j == 2 || j == 5)
+            printf("%s", sheet[whereTheLine][j]);
+            switch (j+1)
             {
-                if (strlen(sheet[whereTheLine][j]) < 4)
-                {
-                    printf("\t\t");
-                }
-                else
-                {
-                    printf("\t");
-                }
+                case 1:
+                    gotoxy(9,2);
+                    break;
+                case 2:
+                    gotoxy(25,2);
+                    break;
+                case 3:
+                    gotoxy(41,2);
+                    break;
+                case 4:
+                    gotoxy(49,2);
+                    break;
+                case 5:
+                    gotoxy(57,2);
+                    break;
+                case 6:
+                    gotoxy(73,2);
+                    break;
+                case 7:
+                    gotoxy(89,2);
+                    break;
+                default:
+                    break;
             }
         }
         printf("\n");
@@ -336,20 +350,38 @@ void queryByApart()
         {
             if (i != row - 1)
             {
-                printf("%s\t", sheet[whereTheLines[i]][j]);
+                printf("%s", sheet[whereTheLines[i]][j]);
             }
             else
             {
                 printf("%s\n", sheet[whereTheLines[i]][j]);
             }
-            // 格式化
-            if (j == 1 && strlen(sheet[whereTheLines[i]][j]) <= 4)
+            int y = whereY();
+            switch (j+1)
             {
-                printf("\t");
-            }
-            if (j == 2 || j == 5)
-            {
-                printf("\t");
+                case 1:
+                    gotoxy(9,y);
+                    break;
+                case 2:
+                    gotoxy(25,y);
+                    break;
+                case 3:
+                    gotoxy(41,y);
+                    break;
+                case 4:
+                    gotoxy(49,y);
+                    break;
+                case 5:
+                    gotoxy(57,y);
+                    break;
+                case 6:
+                    gotoxy(73,y);
+                    break;
+                case 7:
+                    gotoxy(89,y);
+                    break;
+                default:
+                    break;
             }
         }
         printf("\n");

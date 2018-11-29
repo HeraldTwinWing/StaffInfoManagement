@@ -22,6 +22,8 @@ void enterPassword(char *a);
 
 int invertBOOL(int a);
 
+void gotoxy(int x,int y);
+
 int whereX();
 
 int whereY();

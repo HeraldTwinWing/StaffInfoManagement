@@ -11,11 +11,3 @@ int main()
         selectOption();
     }
 }
-
-int main1()
-{
-    int a= RSHash("admin", 15);
-    printf("%d", a);
-}
-
-

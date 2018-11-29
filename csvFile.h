@@ -18,6 +18,8 @@ char ***sheetOpen();
 
 void sheetQuery(BOOL adminMode, char *ID);
 
+void infoFormattedOutput(int line);
+
 //该函数功能将查询表格的所有内容，并返回第一个匹配值所在行
 int queryContents(char ***sheet, char queryContent[]);
 
