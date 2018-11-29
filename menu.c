@@ -62,8 +62,11 @@ void selectOption()
                 sheetQuery(false, ID);
                 break;
             case 2:       //管理员模式
-//                enterAdminMode();
-                adminMode = true;
+                enterAdminMode();
+
+                //测试用,注释掉上方代码并取下下面代码注释
+                //即可不输入密码进入管理员模式
+//                adminMode = true;
                 break;
             case 3:       //退出系统
                 exitSystem = 0;

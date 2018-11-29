@@ -1,6 +1,6 @@
 ID,name,department,age,sex,birthday,phonenumber,address
-1,Yu Jinbao,asd,18,male,4.11,18145036697,SCU
-2,name,asd,18,male,4.11,18145036697,SCU
+1,Yu Jinbao,asd,18,male,4.11,18145036697,SCU-CS
+*,name,asd,18,male,4.11,18145036697,SCU
 3,*,asd,18,male,4.11,18145036697,SCU
 4,Martin Yu,asd,18,male,4.11,18145036697,SCU
 666,Duan,abc,20,male,11-22,1234567890,SCU

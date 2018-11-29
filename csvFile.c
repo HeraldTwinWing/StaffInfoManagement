@@ -181,28 +181,29 @@ int queryContents(char ***sheet, char queryContent[])
         for (int j = 0; j < row; ++j)
         {
             printf("%s", sheet[whereTheLine][j]);
+            int y = whereY();
             switch (j+1)
             {
                 case 1:
-                    gotoxy(9,2);
+                    gotoxy(9,y);
                     break;
                 case 2:
-                    gotoxy(25,2);
+                    gotoxy(25,y);
                     break;
                 case 3:
-                    gotoxy(41,2);
+                    gotoxy(41,y);
                     break;
                 case 4:
-                    gotoxy(49,2);
+                    gotoxy(49,y);
                     break;
                 case 5:
-                    gotoxy(57,2);
+                    gotoxy(57,y);
                     break;
                 case 6:
-                    gotoxy(73,2);
+                    gotoxy(73,y);
                     break;
                 case 7:
-                    gotoxy(89,2);
+                    gotoxy(89,y);
                     break;
                 default:
                     break;
