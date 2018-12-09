@@ -4,3 +4,6 @@ ID,name,department,age,sex,birthday,phonenumber,address
 3,*,asd,18,male,4.11,18145036697,SCU
 4,Martin Yu,asd,18,male,4.11,18145036697,SCU
 666,Duan,abc,20,male,11-22,1234567890,SCU
+*,*,*,*,*,*,*,*
+1,1,1,1,1,1,1,1
+123,fdgsegr,abc,18,male,234,2345,SCU

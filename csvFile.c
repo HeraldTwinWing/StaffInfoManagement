@@ -307,7 +307,7 @@ int *traverse(char *queryContent, int queryRow)
                     countLines++;
                 }
             }
-            else if (j == 1 || haveFound == true)
+            else if (j == 1 && haveFound == true)
             {
                 whereTheLines[arrayPos] = i;
                 arrayPos++;
@@ -345,11 +345,12 @@ void queryByApart()
     printf("\n");
 
     // 打印查询到的内容
-    for (int i = 0; i < whereTheLines[0]; ++i)
+    //whereTheLines第一项为列数
+    for (int i = 1; i <= whereTheLines[0]; ++i)
     {
         for (int j = 0; j < row; ++j)
         {
-            if (i != row - 1)
+            if (i != row)
             {
                 printf("%s", sheet[whereTheLines[i]][j]);
             }

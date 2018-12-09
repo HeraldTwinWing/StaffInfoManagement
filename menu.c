@@ -62,6 +62,7 @@ void selectOption()
                 sheetQuery(false, ID);
                 break;
             case 2:       //管理员模式
+
                 enterAdminMode();
 
                 //测试用,注释掉上方代码并取下下面代码注释
