@@ -29,7 +29,7 @@ void sheetContentRemove();
 //queryRow参数为查询的列，从1开始计算
 int *traverse(char *queryContent, int queryRow);
 
-void queryByApart();
+void queryByDepart();
 
 //初始化line和row变量
 //涉及文件读取的操作，结束时必须调用函数

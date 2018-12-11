@@ -16,6 +16,7 @@ int login = false;
 int exitSystem = 1; //用于控制主循环
 char ID[100];
 
+//打印主菜单
 void showMenu()
 {
     if (login == false)
@@ -47,6 +48,7 @@ void showMenu()
     }
 }
 
+//根据输入内容调用对应功能的函数
 void selectOption()
 {
     int selected = 0;
@@ -88,7 +90,7 @@ void selectOption()
                 sheetQuery(true, ID);
                 break;
             case 2:
-                queryByApart();
+                queryByDepart();
                 break;
             case 3:
                 sheetAddLine();
@@ -113,7 +115,8 @@ void selectOption()
 
 }
 
-void enterAdminMode() //清屏并显示进入管理员模式
+//清屏并显示进入管理员模式
+void enterAdminMode()
 {
     char inputPassword[15] = "";
     FILE *pw = fopen("password", "r");
@@ -151,15 +154,20 @@ void enterAdminMode() //清屏并显示进入管理员模式
     }
 }
 
+//修改管理员模式密码
 void changePassword()
 {
+    //计算新密码的hash值
     printf("Please Enter the new password:");
     char newPassword[15] = {0};
     scanf("%s", newPassword);
     int newPasswordHash = RSHash(newPassword, 15);
+
+    //将新密码hash值写入文件
     FILE *pw = fopen("password", "w");
     fprintf(pw, "%d", newPasswordHash);
     fclose(pw);
+
     printf("Change completed\n");
     getch();
     system("cls");

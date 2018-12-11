@@ -17,6 +17,8 @@ int row = 0;    //行数
 int line = 0;   //列数
 
 
+//打开CSV文件
+// 返回值为一个内容与该文件内容相同的二维数组的指针
 char ***sheetOpen()
 {
     refreshLineAndRowTemp();
@@ -66,7 +68,7 @@ char ***sheetOpen()
 
     for (int j = 0; j < line; ++j)
     {
-        char *str = malloc(100 * sizeof(char));
+        char *str =(char *) malloc(100 * sizeof(char));
         fgets(str, 100, temp);
         char *a = strtok(str, ",");
 
@@ -105,6 +107,8 @@ char ***sheetOpen()
     return st;
 }
 
+//按ID查询表格内容
+//输出匹配ID的所在行全部信息
 void sheetQuery(BOOL adminMode, char *ID)
 {
     char ***sheet = sheetOpen();
@@ -137,6 +141,7 @@ void sheetQuery(BOOL adminMode, char *ID)
     //fclose(csv);
 }
 
+//查询指定内容，并返回所在行
 int queryContents(char ***sheet, char queryContent[])
 {
     BOOL haveFound = false;
@@ -182,28 +187,28 @@ int queryContents(char ***sheet, char queryContent[])
         {
             printf("%s", sheet[whereTheLine][j]);
             int y = whereY();
-            switch (j+1)
+            switch (j + 1)
             {
                 case 1:
-                    gotoxy(9,y);
+                    gotoxy(9, y);
                     break;
                 case 2:
-                    gotoxy(25,y);
+                    gotoxy(25, y);
                     break;
                 case 3:
-                    gotoxy(41,y);
+                    gotoxy(41, y);
                     break;
                 case 4:
-                    gotoxy(49,y);
+                    gotoxy(49, y);
                     break;
                 case 5:
-                    gotoxy(57,y);
+                    gotoxy(57, y);
                     break;
                 case 6:
-                    gotoxy(73,y);
+                    gotoxy(73, y);
                     break;
                 case 7:
-                    gotoxy(89,y);
+                    gotoxy(89, y);
                     break;
                 default:
                     break;
@@ -215,6 +220,7 @@ int queryContents(char ***sheet, char queryContent[])
     return whereTheLine;
 }
 
+//按ID检索后删除该ID所在行
 void sheetContentRemove()
 {
     char ***sheet = sheetOpen();
@@ -286,6 +292,10 @@ void refreshLineAndRowTemp()
     row = 0;
 }
 
+//遍历表格查询内容所在行
+//返回值为 int 数组
+//第一项为查找到的行的数量
+//从第二项开始为所在行
 int *traverse(char *queryContent, int queryRow)
 {
     queryRow--;
@@ -315,7 +325,7 @@ int *traverse(char *queryContent, int queryRow)
         }
         if (j == 0)
         {
-            whereTheLines = malloc((countLines + 1) * sizeof(int));
+            whereTheLines =(int *) malloc((countLines + 1) * sizeof(int));
             whereTheLines[0] = countLines;
         }
     }
@@ -323,7 +333,8 @@ int *traverse(char *queryContent, int queryRow)
     return whereTheLines;
 }
 
-void queryByApart()
+//查询并打印某个部门的全部员工信息
+void queryByDepart()
 {
     printf("Please enter the department you want to list:");
     char queryContent[100] = {0};
@@ -332,63 +343,70 @@ void queryByApart()
     int *whereTheLines = traverse(queryContent, 3);
     char ***sheet = sheetOpen();
 
-    // 输出表头
-    for (int i = 0; i < row; ++i)
-    {
-        printf("%s\t", sheet[0][i]);
-        // 格式化
-        if (i == 1)
-        {
-            printf("\t");
-        }
-    }
-    printf("\n");
 
-    // 打印查询到的内容
-    //whereTheLines第一项为列数
-    for (int i = 1; i <= whereTheLines[0]; ++i)
+    if (whereTheLines != 0)
     {
-        for (int j = 0; j < row; ++j)
+        // 输出表头
+        for (int i = 0; i < row; ++i)
         {
-            if (i != row)
+            printf("%s\t", sheet[0][i]);
+            // 格式化
+            if (i == 1)
             {
-                printf("%s", sheet[whereTheLines[i]][j]);
-            }
-            else
-            {
-                printf("%s\n", sheet[whereTheLines[i]][j]);
-            }
-            int y = whereY();
-            switch (j+1)
-            {
-                case 1:
-                    gotoxy(9,y);
-                    break;
-                case 2:
-                    gotoxy(25,y);
-                    break;
-                case 3:
-                    gotoxy(41,y);
-                    break;
-                case 4:
-                    gotoxy(49,y);
-                    break;
-                case 5:
-                    gotoxy(57,y);
-                    break;
-                case 6:
-                    gotoxy(73,y);
-                    break;
-                case 7:
-                    gotoxy(89,y);
-                    break;
-                default:
-                    break;
+                printf("\t");
             }
         }
         printf("\n");
-    }
 
+        // 打印查询到的内容
+        //whereTheLines第一项为列数
+        for (int i = 1; i <= whereTheLines[0]; ++i)
+        {
+            for (int j = 0; j < row; ++j)
+            {
+                if (i != row)
+                {
+                    printf("%s", sheet[whereTheLines[i]][j]);
+                }
+                else
+                {
+                    printf("%s\n", sheet[whereTheLines[i]][j]);
+                }
+                int y = whereY();
+                switch (j + 1)
+                {
+                    case 1:
+                        gotoxy(9, y);
+                        break;
+                    case 2:
+                        gotoxy(25, y);
+                        break;
+                    case 3:
+                        gotoxy(41, y);
+                        break;
+                    case 4:
+                        gotoxy(49, y);
+                        break;
+                    case 5:
+                        gotoxy(57, y);
+                        break;
+                    case 6:
+                        gotoxy(73, y);
+                        break;
+                    case 7:
+                        gotoxy(89, y);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            printf("\n");
+        }
+    }
+    else
+    {
+        printf("The Department do not exist, or have no worker");
+    }
 
     printf("Press enter to continue.\n");
     while (true)
@@ -404,18 +422,32 @@ void queryByApart()
     free(sheet);
 }
 
+//为CSV文件添加行
+//用于录入新员工信息
+//录入前会检查输入的ID是否存在
 void sheetAddLine()
 {
     char ***sheet = sheetOpen();
     FILE *csv = fopen("Staff.csv", "a");
+    BOOL idAlreadyExist = false;
 
     char inputData[100] = {0};
 
     for (int i = 0; i < row; ++i)
     {
         printf("Please enter the %s:", sheet[0][i]);
-//        scanf("%s", inputData);
         gets(inputData);
+
+        if (i == 0)
+        {
+            idAlreadyExist = traverse(sheet[0][i], 1)[0];
+            if (idAlreadyExist == 0)
+            {
+                printf("The ID has already existed\n");
+                break;
+            }
+        }
+
         //当输入为空时用*占位
         if (compareString(inputData, ""))
         {
@@ -433,8 +465,10 @@ void sheetAddLine()
         }
     }
 
-
-    printf("Entry completed\n");
+    if (idAlreadyExist == true)
+    {
+        printf("Entry completed\n");
+    }
     printf("Press enter to continue.\n");
     while (true)
     {
@@ -449,6 +483,7 @@ void sheetAddLine()
     system("cls");
 }
 
+//修改CSV文件的某项的内容
 void sheetModfiy()
 {
     char ***sheet = sheetOpen();
@@ -519,6 +554,8 @@ void sheetModfiy()
     free(sheet);
     system("cls");
 }
+
+
 
 char ***create3DArray()
 {
