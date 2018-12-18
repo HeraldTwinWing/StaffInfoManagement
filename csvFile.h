@@ -16,7 +16,7 @@
 
 char ***sheetOpen();
 
-void sheetQuery(BOOL adminMode, char *ID);
+
 
 void infoFormattedOutput(int line);
 
