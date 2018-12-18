@@ -109,37 +109,7 @@ char ***sheetOpen()
 
 //按ID查询表格内容
 //输出匹配ID的所在行全部信息
-void sheetQuery(BOOL adminMode, char *ID)
-{
-    char ***sheet = sheetOpen();
-    char queryContent[100];
 
-    if (adminMode == false)
-    {
-        strcpy(queryContent, ID);
-        queryContents(sheet, queryContent);
-    }
-    else
-    {
-        printf("Please enter ID that you want to query:");
-        scanf("%s", queryContent);
-        queryContents(sheet, queryContent);
-    }
-
-    printf("Press enter to continue.\n");
-    while (true)
-    {
-        int pressKey = getch();
-        if (pressKey == 13)
-        {
-            break;
-        }
-    }
-
-    system("cls");
-    //refreshLineAndRowTemp();
-    //fclose(csv);
-}
 
 //查询指定内容，并返回所在行
 int queryContents(char ***sheet, char queryContent[])
@@ -224,7 +194,7 @@ int queryContents(char ***sheet, char queryContent[])
 void sheetContentRemove()
 {
     char ***sheet = sheetOpen();
-    char ID[10] = {0};
+    char ID[100] = {0};
 
     printf("Enter ID you want to remove:");
     scanf("%s", ID);
@@ -533,25 +503,27 @@ void sheetModfiy()
         }
 
         sheet[whereTheLine][targetRow] = content;
+
+        FILE *csv = fopen("Staff.csv", "w");
+        for (int j = 0; j < line; ++j)
+        {
+            for (int i = 0; i < row; ++i)
+            {
+                fputs(sheet[j][i], csv);
+                if (i != row - 1)
+                {
+                    fputc(',', csv);
+                }
+            }
+            fputc('\n', csv);
+        }
+        printf("\nModfiy completed\n");
+        getch();
+        fclose(csv);
+        free(sheet);
     }
 
-    FILE *csv = fopen("Staff.csv", "w");
-    for (int j = 0; j < line; ++j)
-    {
-        for (int i = 0; i < row; ++i)
-        {
-            fputs(sheet[j][i], csv);
-            if (i != row - 1)
-            {
-                fputc(',', csv);
-            }
-        }
-        fputc('\n', csv);
-    }
-    printf("\nModfiy completed\n");
-    getch();
-    fclose(csv);
-    free(sheet);
+
     system("cls");
 }
 
