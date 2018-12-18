@@ -13,9 +13,6 @@
 #define false 0
 #define true 1
 
-int row = 0;    //行数
-int line = 0;   //列数
-
 
 //打开CSV文件
 // 返回值为一个内容与该文件内容相同的二维数组的指针
@@ -107,9 +104,25 @@ char ***sheetOpen()
     return st;
 }
 
-//按ID查询表格内容
-//输出匹配ID的所在行全部信息
+void contentWrite(char ***sheet)
+{
+    FILE *csv = fopen("Staff.csv", "w");
 
+    for (int j = 0; j < line; ++j)
+    {
+        for (int i = 0; i < row; ++i)
+        {
+            fputs(sheet[j][i], csv);
+            if (i != row - 1)
+            {
+                fputc(',', csv);
+            }
+        }
+        fputc('\n', csv);
+    }
+
+    fclose(csv);
+}
 
 //查询指定内容，并返回所在行
 int queryContents(char ***sheet, char queryContent[])
@@ -188,71 +201,6 @@ int queryContents(char ***sheet, char queryContent[])
     }
     //free(sheet);
     return whereTheLine;
-}
-
-//按ID检索后删除该ID所在行
-void sheetContentRemove()
-{
-    char ***sheet = sheetOpen();
-    char ID[100] = {0};
-
-    printf("Enter ID you want to remove:");
-    scanf("%s", ID);
-
-    int whereTheLine = 0;
-    whereTheLine = queryContents(sheet, ID);
-    if (whereTheLine != 0)
-    {
-        printf("Do you want to remove this ID and its all contents?[Y/N]");
-        BOOL remove = false;
-        while (true)
-        {
-            //int a = getch();
-            char a = 0;
-            scanf("%c", &a);
-            if (a == 89 || a == 121)
-            {
-                remove = true;
-                break;
-            }
-            else if (a == 78 || a == 110)
-            {
-                break;
-            }
-        }
-
-        if (remove == true)
-        {
-            for (int i = 0; i < row; ++i)
-            {
-                sheet[whereTheLine][i] = "";
-            }
-
-            FILE *csv = fopen("Staff.csv", "w");
-            for (int j = 0; j < line; ++j)
-            {
-                for (int i = 0; i < row; ++i)
-                {
-                    fputs(sheet[j][i], csv);
-                    if (i != row - 1 && invertBOOL(compareString(sheet[j][i], "")))
-                    {
-                        fputc(',', csv);
-                    }
-                }
-
-                //当首列为空的时候，不换行，即跳过空行
-                if (invertBOOL(compareString(sheet[j][0], "")))
-                {
-                    fputc('\n', csv);
-                }
-            }
-            fclose(csv);
-        }
-    }
-
-    free(sheet);
-    //refreshLineAndRowTemp();
-    system("cls");
 }
 
 //初始化line和row变量
@@ -392,66 +340,6 @@ void queryByDepart()
     free(sheet);
 }
 
-//为CSV文件添加行
-//用于录入新员工信息
-//录入前会检查输入的ID是否存在
-void sheetAddLine()
-{
-    char ***sheet = sheetOpen();
-    FILE *csv = fopen("Staff.csv", "a");
-    BOOL idAlreadyExist = false;
-
-    char inputData[100] = {0};
-
-    for (int i = 0; i < row; ++i)
-    {
-        printf("Please enter the %s:", sheet[0][i]);
-        gets(inputData);
-
-        if (i == 0)
-        {
-            idAlreadyExist = traverse(sheet[0][i], 1)[0];
-            if (idAlreadyExist == 0)
-            {
-                printf("The ID has already existed\n");
-                break;
-            }
-        }
-
-        //当输入为空时用*占位
-        if (compareString(inputData, ""))
-        {
-            strcpy(inputData, "*");
-        }
-
-        fputs(inputData, csv);
-        if (i != row - 1)
-        {
-            fputc(',', csv);
-        }
-        else
-        {
-            fputc('\n', csv);
-        }
-    }
-
-    if (idAlreadyExist == true)
-    {
-        printf("Entry completed\n");
-    }
-    printf("Press enter to continue.\n");
-    while (true)
-    {
-        int pressKey = getch();
-        if (pressKey == 13)
-        {
-            break;
-        }
-    }
-    free(sheet);
-    fclose(csv);
-    system("cls");
-}
 
 //修改CSV文件的某项的内容
 void sheetModfiy()
@@ -467,14 +355,14 @@ void sheetModfiy()
 
     if (whereTheLine != 0)
     {
-        printf("Please enter the hear of row you want to change:");
+        printf("Please enter the head of row you want to change:");
         char changeRow[100] = {0};
         scanf("%s", changeRow);
+        getchar();  //删除scanf后留下的回车
 
         printf("\n");
         printf("Please enter the content:");
         char content[100] = {0};
-        getchar();
         gets(content);
         if (content[0] == '\0')
         {
@@ -504,22 +392,9 @@ void sheetModfiy()
 
         sheet[whereTheLine][targetRow] = content;
 
-        FILE *csv = fopen("Staff.csv", "w");
-        for (int j = 0; j < line; ++j)
-        {
-            for (int i = 0; i < row; ++i)
-            {
-                fputs(sheet[j][i], csv);
-                if (i != row - 1)
-                {
-                    fputc(',', csv);
-                }
-            }
-            fputc('\n', csv);
-        }
+        contentWrite(sheet);
         printf("\nModfiy completed\n");
         getch();
-        fclose(csv);
         free(sheet);
     }
 

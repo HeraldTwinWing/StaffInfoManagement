@@ -8,5 +8,13 @@
 #endif //STAFFINFOMANAGEMENT_MAINFUNCTION_H
 
 #include "csvFile.h"
+#include "hash.h"
+#include "stringOperation.h"
+
+void changePassword();
 
 void sheetQuery(BOOL adminMode, char *ID);
+
+void sheetAddLine();
+
+void sheetContentRemove();
