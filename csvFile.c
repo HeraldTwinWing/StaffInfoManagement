@@ -467,7 +467,7 @@ void sheetModfiy()
 
     if (whereTheLine != 0)
     {
-        printf("Please enter the hear of row you want to change:");
+        printf("Please enter the head of row you want to change:");
         char changeRow[100] = {0};
         scanf("%s", changeRow);
 
