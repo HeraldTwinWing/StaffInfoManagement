@@ -410,8 +410,8 @@ void sheetAddLine()
 
         if (i == 0)
         {
-            idAlreadyExist = traverse(sheet[0][i], 1)[0];
-            if (idAlreadyExist == 0)
+            idAlreadyExist = traverse(inputData, 1)[0];
+            if (idAlreadyExist != 0)
             {
                 printf("The ID has already existed\n");
                 break;
