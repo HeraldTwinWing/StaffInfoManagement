@@ -7,8 +7,6 @@
 
 #endif //STAFFINFOMANAGEMENT_MENU_H
 
-#include "mainFunction.h"
-
 int adminMode;
 int exitSystem;
 

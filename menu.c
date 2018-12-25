@@ -153,3 +153,22 @@ void enterAdminMode()
         }
     }
 }
+
+//修改管理员模式密码
+void changePassword()
+{
+    //计算新密码的hash值
+    printf("Please Enter the new password:");
+    char newPassword[15] = {0};
+    scanf("%s", newPassword);
+    int newPasswordHash = RSHash(newPassword, 15);
+
+    //将新密码hash值写入文件
+    FILE *pw = fopen("password", "w");
+    fprintf(pw, "%d", newPasswordHash);
+    fclose(pw);
+
+    printf("Change completed\n");
+    getch();
+    system("cls");
+}
